@@ -17,5 +17,5 @@ jobs:
           SERVER_USER: ${{ secrets.SSH_USER }}
           SERVER_SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run:
-          chmod 600 $HOME/ .ssh/id_rsa
+          chmod 755 $HOME/ .ssh/id_rsa
           ssh -0 StrictHostKeyChecking=no-i $HOME/ .ssh/id_rsa $SERVER_USER@$SERVER_HOST 'bash -s' < /tmp/test/script.sh
