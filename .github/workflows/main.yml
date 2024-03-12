@@ -2,17 +2,20 @@ on:
   push:
     branches:
       - main
- 
-jobs:
-  run_pull:
-    name: run pull
-    runs-on: ubuntu-latest
 
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+   
     steps:
-    - name: install ssh keys
-      run:
-        install -m 600 -D /dev/null ~/.ssh/id_rsa
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-        ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
-    - name: connect and pull
-      run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && git checkout ${{ secrets.MAIN_BRANCH }} && git pull && exit"
+      - name: checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Execute script on server
+        env:
+          SERVER_HOST: ${{ secrets.SSH_HOST }}
+          SERVER_USER: ${{ secrets.SSH_USER }}
+          SERVER _SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run:
+          chmod 600 $HOME/ .ssh/id_rsa
+          ssh -0 StrictHostKeyChecking=no-i $HOME/ .ssh/id_rsa $SERVER_USER@$SERVER_HOST 'bash -s' < /tmp/test/script.sh
